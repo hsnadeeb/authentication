@@ -1,16 +1,19 @@
+// import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { useState, useRef, useContext } from 'react';
 import AuthContext from '../../store/auth-context'
 import classes from './AuthForm.module.css';
 
 const AuthForm = () => {
+  const navigate = useNavigate();
   const emailInputRef=useRef();
   const passwordInputRef=useRef();
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
   const authCtx=useContext(AuthContext);
-  
+
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -18,6 +21,7 @@ const AuthForm = () => {
 
   const submitHandler = (event)=>{
     event.preventDefault();
+    console.log(authCtx.token);
 
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
@@ -55,6 +59,7 @@ const AuthForm = () => {
             const token  = data.idToken;
             console.log('JWT (idToken):', token);
             authCtx.login(token)
+            navigate('/');
             // localStorage.setItem('token', token);
             // const token = localStorage.getItem('token');
           }
